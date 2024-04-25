@@ -37,7 +37,7 @@ def show_assignments():
 
 root = Tk()
 root.geometry("1200x800")
-root.title("MGIS Midterm Exam")
+root.title("Syllabuzzy")
 
 Label(root, text="RIT username:").grid(row=0, column=0, sticky=W)
 entValue = Entry(root)
