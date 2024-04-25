@@ -4,24 +4,21 @@ import pandas as pd
 from tkinter import *
 from tkinter import ttk
 
+from pandas import to_datetime
+
 students = pd.read_csv('Students.csv')
 classes = pd.read_csv('Classes.csv')
 assignments = pd.read_csv('Assignments.csv')
 classlist = pd.read_csv('Classlist.csv')
-classlist['student'] = classlist['student'].str.strip()
+classlist['RIT Username'] = classlist['RIT Username'].str.strip()
 classlist = classlist.iloc[:, :2]
 student1 = students.iloc[1][5]
-print(student1)
-print('\n\n\n\n')
-print('student1 is in the following classes:\n')
-c = classlist[classlist['student'] == student1]
-print(c['class'])
 
 def display_classes():
     lst1Set.delete(0, tkinter.END)
     name = str(entValue.get()).lower()
-    x = classlist[classlist['student'] == name]
-    for i in x['class']:
+    x = classlist[classlist['RIT Username'] == name]
+    for i in x['Class Code']:
         lst1Set.insert(0, i)
 
 
@@ -32,6 +29,7 @@ def show_assignments():
     selection = lst1Set.get(selection_index[0])  # Get the selected class
     assignment_treeview.delete(*assignment_treeview.get_children())  # Clear previous assignments
     assignments_for_class = assignments[assignments['Class Code'] == selection]
+    assignments_for_class['Due date'] = to_datetime(assignments_for_class['Due date'])
     assignments_for_class_sorted = assignments_for_class.sort_values(by='Due date')
     for index, row in assignments_for_class_sorted.iterrows():
         assignment_treeview.insert('', 'end', values=(row['Assignment name'], row['Class Code'], row['Due date']))
