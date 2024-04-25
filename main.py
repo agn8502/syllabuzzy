@@ -29,14 +29,14 @@ def show_assignments():
     selection = lst1Set.get(selection_index[0])  # Get the selected class
     assignment_treeview.delete(*assignment_treeview.get_children())  # Clear previous assignments
     assignments_for_class = assignments[assignments['Class Code'] == selection]
-    assignments_for_class['Due date'] = to_datetime(assignments_for_class['Due date'])
+    assignments_for_class['Due date'] = to_datetime(assignments_for_class['Due date']).dt.date
     assignments_for_class_sorted = assignments_for_class.sort_values(by='Due date')
     for index, row in assignments_for_class_sorted.iterrows():
-        assignment_treeview.insert('', 'end', values=(row['Assignment name'], row['Class Code'], row['Due date']))
+        assignment_treeview.insert('', 'end', values=(row['Assignment name'], row['Class Code'], row['Due date'], row['Assignment Weight']))
 
 
 root = Tk()
-root.geometry("900x500")
+root.geometry("1200x800")
 root.title("MGIS Midterm Exam")
 
 Label(root, text="RIT username:").grid(row=0, column=0, sticky=W)
@@ -60,10 +60,11 @@ showAssignmentsBtn.grid(row=2, column=0, sticky=W)
 
 frm2Set = Frame(root)
 frm2Set.grid(row=4, column=1, rowspan=8)
-assignment_treeview = ttk.Treeview(frm2Set, columns=('Assignment name', 'Class Code', 'Due date'), show='headings')
+assignment_treeview = ttk.Treeview(frm2Set, columns=('Assignment name', 'Class Code', 'Due date', 'Assignment Weight'), show='headings')
 assignment_treeview.heading('Assignment name', text='Assignment Name')
 assignment_treeview.heading('Class Code', text='Class Code')
 assignment_treeview.heading('Due date', text='Due Date')
+assignment_treeview.heading('Assignment Weight', text='Assignment Weight')
 assignment_treeview.grid(row=0, column=0, sticky='nsew')
 assignment_scrollbar = ttk.Scrollbar(frm2Set, orient="vertical", command=assignment_treeview.yview)
 assignment_scrollbar.grid(row=0, column=1, sticky='ns')
